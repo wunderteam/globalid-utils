@@ -14,7 +14,7 @@ class GlobalID
     # the model within it. Otherwise, find the model normally.
     def self.locate(gid, _options = {})
       if (gid = GlobalID.parse(gid))
-        return super if gid.app.to_s == GlobalID.app.to_s
+        return gid.model_name.classify.constantize.find(gid.model_id) if gid.app.to_s == GlobalID.app.to_s
         "#{gid.app.classify}::#{gid.model_name}".constantize.find(gid.model_id)
       end
     end
