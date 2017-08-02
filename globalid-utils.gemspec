@@ -17,10 +17,10 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.3.0'
 
-  s.add_dependency 'activemodel',    '~> 4.2.6'
-  s.add_dependency 'activesupport',  '~> 4.2.6'
-  s.add_dependency 'globalid',       '~> 0.3.6'
-  s.add_dependency 'railties',       '~> 4.2.6'
+  s.add_dependency 'activemodel',    ['>= 4.2.6', '< 6.0']
+  s.add_dependency 'activesupport',  ['>= 4.2.6', '< 6.0']
+  s.add_dependency 'globalid',       '~> 0.4.0'
+  s.add_dependency 'railties',       ['>= 4.2.6', '< 6.0']
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.4.0'
