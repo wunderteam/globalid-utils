@@ -1,7 +1,7 @@
 module Fish
   class Base
-    include ActiveModel::Model
-    include GlobalIdModel
+    include ::ActiveModel::Model
+    include ::GlobalIdUtils::ModelExtensions
 
     attr_accessor :id, :name
 
