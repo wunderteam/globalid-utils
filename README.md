@@ -20,7 +20,7 @@ module Fish
   end
 end
 
-Fish::SimeseFighting.find(1).to_gid # => "gid://fish/Fish::SiameseFighting/1"
+Fish::SimeseFighting.find(1).to_gid.to_s # => "gid://fish/Fish::SiameseFighting/1"
 ```
 
 With `GlobalIdModel`:
@@ -33,7 +33,7 @@ module Fish
   end
 end
 
-Fish::SiameseFighting.find_by(name: 'Pedro').to_gid # => "gid://fish/SiameseFighting/Pedro"
+Fish::SiameseFighting.find_by(name: 'Pedro').to_gid.to_s # => "gid://fish/SiameseFighting/Pedro"
 ```
 
 ## GlobalIdValidator

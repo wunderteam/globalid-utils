@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe GlobalIdValidator, type: :model do
+RSpec.describe GlobalIdValidator do
   let(:model_class) do
     class Model
       include ActiveModel::Validations

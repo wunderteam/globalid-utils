@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe GlobalIdModel, type: :model do
+RSpec.describe GlobalIdUtils::ModelExtensions do
   let(:model_class) do
     module Fish
       class NeonTetra < Base
