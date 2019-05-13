@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    globalid-utils (0.3.0)
+    globalid-utils (0.3.1)
       activemodel (~> 5.2.3)
       activesupport (~> 5.2.3)
       globalid (~> 0.4.0)
