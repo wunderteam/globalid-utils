@@ -1,0 +1,51 @@
+version: 2
+
+# workflow definitions
+workflows:
+  version: 2
+  build:
+    jobs:
+      - rspec:
+          filters:
+            tags:
+              only: /.*/
+
+# test docker config
+docker: &TEST_DOCKER
+  - image: circleci/ruby:2.5.5-node-browsers
+    environment:
+      TZ: "America/Denver"
+
+rspec_steps: &RSPEC_STEPS
+  - checkout
+
+  # Restore cache
+  - restore_cache:
+      key: globalid-utils-{{ arch }}-{{ checksum "Gemfile.lock" }}
+  - run: bundle install --path vendor/bundle
+  - save_cache:
+      key: globalid-utils-{{ arch }}-{{ checksum "Gemfile.lock" }}
+      paths:
+        - vendor/bundle
+
+  # Run rspec in parallel
+  - run:
+      command: |
+        export SPEC_FILES_TO_RUN=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+        echo "Running spec files: $SPEC_FILES_TO_RUN"
+        bundle exec rspec --no-color --profile 10 --format RspecJunitFormatter --out test_results/rspec.xml $SPEC_FILES_TO_RUN
+
+  - store_artifacts:
+      path: test_results/rspec.xml
+
+  # Save test results for timing analysis
+  - store_test_results:
+      path: test_results
+
+# job definitions
+jobs:
+  rspec:
+    parallelism: 2
+    working_directory: ~/globalid-utils-ci
+    docker: *TEST_DOCKER
+    steps: *RSPEC_STEPS
