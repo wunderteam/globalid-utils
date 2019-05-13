@@ -72,7 +72,7 @@ module GlobalIdUtils
 
     def resolve_gid_app
       return self.class.class_variable_get(:@@gid_app) if self.class.class_variable_defined?(:@@gid_app)
-      return self.class.name.split('::').first.downcase if self.class.parent != ::Object
+      return self.class.name.split('::').first.underscore.dasherize if self.class.parent != ::Object
 
       ::GlobalID.app
     end

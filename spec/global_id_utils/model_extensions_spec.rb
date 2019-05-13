@@ -20,7 +20,30 @@ RSpec.describe GlobalIdUtils::ModelExtensions do
   before { GlobalID.app = 'fish' }
   after  { Fish.send(:remove_const, 'NeonTetra') if Fish.const_defined?('NeonTetra') }
 
-  it { expect(subject.to_gid.to_s).to eq('gid://fish/NeonTetra/1') }
+  it 'generates a global id' do
+    expect(subject.to_gid.to_s).to eq('gid://fish/NeonTetra/1')
+  end
+
+  context 'when the class name is two words' do
+    let(:model_class) do
+      module AquaticLifeforms
+        class NeonTetra < Fish::Base
+        end
+      end
+
+      AquaticLifeforms::NeonTetra
+    end
+
+    it 'dasherizes the app name on words' do
+      expect(subject.to_gid.to_s).to eq('gid://aquatic-lifeforms/NeonTetra/1')
+    end
+
+    it 'can parse a dasherized app name' do
+      global_id = GlobalID.parse(subject.to_gid.to_s)
+      expect(global_id.model_name).to eq 'NeonTetra'
+      expect(global_id.app).to eq 'aquatic-lifeforms'
+    end
+  end
 
   describe '::gid_app' do
     let(:model_class) do

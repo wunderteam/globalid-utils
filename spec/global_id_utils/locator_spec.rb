@@ -25,6 +25,23 @@ RSpec.describe GlobalIdUtils::Locator do
       described_class.locate('gid://fish/NeonTetra/1')
       expect(model_class).to have_received(:find).with('1')
     end
+
+    context 'when the app name is more than one word' do
+      let(:model_class) do
+        module AquaticLifeforms
+          class NeonTetra < Fish::Base
+          end
+        end
+
+        AquaticLifeforms::NeonTetra
+      end
+
+      it 'determines the model class and finds the record' do
+        allow(model_class).to receive(:find)
+        described_class.locate('gid://aquatic-lifeforms/NeonTetra/1')
+        expect(model_class).to have_received(:find).with('1')
+      end
+    end
   end
 
   describe '::locate_many' do

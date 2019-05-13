@@ -15,7 +15,7 @@ module GlobalIdUtils
       if gid.app.to_s == ::GlobalID.app.to_s
         gid.model_name.classify.constantize
       else
-        "#{gid.app.classify}::#{gid::model_name}".constantize
+        "#{gid.app.underscore.camelize}::#{gid::model_name}".constantize
       end
     end
     private_class_method :model_class_for
