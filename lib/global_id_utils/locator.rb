@@ -3,7 +3,7 @@ module GlobalIdUtils
     def self.locate(gid)
       gid = ::GlobalID.parse(gid)
       model_class = model_class_for(gid)
-      unscoped(model_class) { model_class.find(gid.model_id) }
+      unscoped(model_class) { model_class.find_by(model_class.gid_model_id_attribute => gid.model_id) }
     end
 
     def self.locate_many(gids, options = {})

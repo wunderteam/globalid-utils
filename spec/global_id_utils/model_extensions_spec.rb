@@ -86,4 +86,37 @@ RSpec.describe GlobalIdUtils::ModelExtensions do
 
     it { expect(subject.to_gid.to_s).to eq('gid://fish/NeonTetra/Pedro') }
   end
+
+  describe '::gid_model_id_attribute' do
+    context 'when a custom model ID is defined' do
+      let(:model_class) do
+        module Fish
+          class NeonTetra < Base
+            gid_model_id :name
+          end
+        end
+
+        Fish::NeonTetra
+      end
+
+      it 'returns the custom attribute' do
+        expect(subject.class.gid_model_id_attribute).to eq(:name)
+      end
+    end
+
+    context 'when a custom model ID is not defined' do
+      let(:model_class) do
+        module Fish
+          class NeonTetra < Base
+          end
+        end
+
+        Fish::NeonTetra
+      end
+
+      it 'returns the custom attribute' do
+        expect(subject.class.gid_model_id_attribute).to eq(:id)
+      end
+    end
+  end
 end
