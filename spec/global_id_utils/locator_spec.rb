@@ -65,7 +65,7 @@ RSpec.describe GlobalIdUtils::Locator do
   describe '::locate_many' do
     let(:second_model_class) do
       module Fish
-        class SiameseFighting
+        class SiameseFighting < Fish::Base
         end
       end
 
@@ -99,13 +99,13 @@ RSpec.describe GlobalIdUtils::Locator do
       neon1, neon3, neon5 = double, double, double
       siamese2, siamese4, siamese6 = double, double, double
 
-      allow(model_class).to receive(:find).with(['1', '3', '5']).and_return([neon1, neon3, neon5])
-      allow(second_model_class).to receive(:find).with(['2', '4', '6']).and_return([siamese2, siamese4, siamese6])
+      allow(model_class).to receive(:find_by).with(id: ['1', '3', '5']).and_return([neon1, neon3, neon5])
+      allow(second_model_class).to receive(:find_by).with(id: ['2', '4', '6']).and_return([siamese2, siamese4, siamese6])
 
       result = described_class.locate_many(gids)
 
-      expect(model_class).to have_received(:find).once
-      expect(second_model_class).to have_received(:find).once
+      expect(model_class).to have_received(:find_by).once
+      expect(second_model_class).to have_received(:find_by).once
       expect(result).to contain_exactly(neon1, neon3, neon5, siamese2, siamese4, siamese6)
     end
 

@@ -3,7 +3,7 @@ module GlobalIdUtils
     def self.locate(gid)
       gid = ::GlobalID.parse(gid)
       model_class = model_class_for(gid)
-      unscoped(model_class) { model_class.find_by(model_class.gid_model_id_attribute => gid.model_id) }
+      unscoped(model_class) { find(model_class, gid.model_id) }
     end
 
     def self.locate_many(gids, options = {})
@@ -23,9 +23,9 @@ module GlobalIdUtils
     def self.find_records(model_class, ids, options)
       unscoped(model_class) do
         if options[:ignore_missing]
-          model_class.where(id: ids)
+          model_class.where(model_class.gid_model_id_attribute => ids)
         else
-          model_class.find(ids)
+          find(model_class, ids)
         end
       end.to_a
     end
@@ -39,5 +39,10 @@ module GlobalIdUtils
       end
     end
     private_class_method :unscoped
+
+    def self.find(model_class, id)
+      model_class.find_by(model_class.gid_model_id_attribute => id)
+    end
+    private_class_method :find
   end
 end
