@@ -99,13 +99,17 @@ RSpec.describe GlobalIdUtils::Locator do
       neon1, neon3, neon5 = double, double, double
       siamese2, siamese4, siamese6 = double, double, double
 
-      allow(model_class).to receive(:find_by).with(id: ['1', '3', '5']).and_return([neon1, neon3, neon5])
-      allow(second_model_class).to receive(:find_by).with(id: ['2', '4', '6']).and_return([siamese2, siamese4, siamese6])
+      allow(model_class).to receive(:where).with(id: ['1', '3', '5']).and_return(
+        double(pluck: [1, 3, 5], to_a: [neon1, neon3, neon5]),
+      )
+      allow(second_model_class).to receive(:where).with(id: ['2', '4', '6']).and_return(
+        double(pluck: [2, 4, 6], to_a: [siamese2, siamese4, siamese6]),
+      )
 
       result = described_class.locate_many(gids)
 
-      expect(model_class).to have_received(:find_by).once
-      expect(second_model_class).to have_received(:find_by).once
+      expect(model_class).to have_received(:where).once
+      expect(second_model_class).to have_received(:where).once
       expect(result).to contain_exactly(neon1, neon3, neon5, siamese2, siamese4, siamese6)
     end
 
@@ -121,6 +125,28 @@ RSpec.describe GlobalIdUtils::Locator do
       expect(model_class).to have_received(:where).once
       expect(second_model_class).to have_received(:where).once
       expect(result).to contain_exactly(neon1, neon3, neon5, siamese2, siamese4, siamese6)
+    end
+
+    it "raises a not found error when one of the models can't be found" do
+      neon1, neon3 = double, double
+
+      relation = double(
+        pluck: [1, 3],
+        to_a: [neon1, neon3],
+        raise_record_not_found_exception!: 'boom!',
+      )
+      allow(relation).to receive(:raise_record_not_found_exception!).and_raise('boom!')
+      allow(model_class).to receive(:where).with(id: ['1', '3', '5']).and_return(relation)
+
+      gids = [
+        'gid://fish/NeonTetra/1',
+        'gid://fish/NeonTetra/3',
+        'gid://fish/NeonTetra/5',
+      ].map { |s| GlobalID.parse(s) }
+
+      expect do
+        described_class.locate_many(gids)
+      end.to raise_error('boom!')
     end
   end
 end
