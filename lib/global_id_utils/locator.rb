@@ -21,7 +21,6 @@ module GlobalIdUtils
     private_class_method :model_class_for
 
     def self.find_records(model_class, ids, options)
-      ids = [ids] unless ids.is_a?(Array)
       ids = ids.compact.uniq
 
       unscoped(model_class) do
