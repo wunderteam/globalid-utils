@@ -34,11 +34,16 @@ module GlobalIdUtils
       end
 
       def gid_model_id(model_id)
-        unless model_id.is_a?(Symbol) || model_id.respond_to?(:call)
+        unless model_id.is_a?(Symbol)
           raise ArgumentError, 'Invalid model_id for GlobalID'
         end
 
         class_variable_set(:@@gid_model_id, model_id)
+      end
+
+      def gid_model_id_attribute
+        return :id unless class_variable_defined?(:@@gid_model_id)
+        class_variable_get(:@@gid_model_id)
       end
     end
 
@@ -85,17 +90,7 @@ module GlobalIdUtils
     end
 
     def resolve_gid_model_id
-      return id unless self.class.class_variable_defined?(:@@gid_model_id)
-
-      model_id = self.class.class_variable_get(:@@gid_model_id)
-
-      if model_id.is_a?(Symbol)
-        send(model_id)
-      elsif model_id.respond_to?(:call)
-        model_id.call(self)
-      else
-        id
-      end
+      send(self.class.gid_model_id_attribute)
     end
   end
 end
