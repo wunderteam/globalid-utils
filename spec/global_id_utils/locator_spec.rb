@@ -21,9 +21,9 @@ RSpec.describe GlobalIdUtils::Locator do
     end
 
     it 'determines the model class and finds the record' do
-      allow(model_class).to receive(:find_by)
+      allow(model_class).to receive(:find_by!)
       described_class.locate('gid://fish/NeonTetra/1')
-      expect(model_class).to have_received(:find_by).with(id: '1')
+      expect(model_class).to have_received(:find_by!).with(id: '1')
     end
 
     context 'when the app name is more than one word' do
@@ -37,9 +37,9 @@ RSpec.describe GlobalIdUtils::Locator do
       end
 
       it 'determines the model class and finds the record' do
-        allow(model_class).to receive(:find_by)
+        allow(model_class).to receive(:find_by!)
         described_class.locate('gid://aquatic-lifeforms/NeonTetra/1')
-        expect(model_class).to have_received(:find_by).with(id: '1')
+        expect(model_class).to have_received(:find_by!).with(id: '1')
       end
     end
 
@@ -55,9 +55,9 @@ RSpec.describe GlobalIdUtils::Locator do
       end
 
       it 'finds the model by the custom attribute' do
-        allow(model_class).to receive(:find_by)
+        allow(model_class).to receive(:find_by!)
         described_class.locate('gid://fish/NeonTetra/public-id-1')
-        expect(model_class).to have_received(:find_by).with(public_id: 'public-id-1')
+        expect(model_class).to have_received(:find_by!).with(public_id: 'public-id-1')
       end
     end
   end
