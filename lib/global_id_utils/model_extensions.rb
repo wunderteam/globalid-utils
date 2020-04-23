@@ -77,14 +77,14 @@ module GlobalIdUtils
 
     def resolve_gid_app
       return self.class.class_variable_get(:@@gid_app) if self.class.class_variable_defined?(:@@gid_app)
-      return self.class.name.split('::').first.underscore.dasherize if self.class.parent != ::Object
+      return self.class.name.split('::').first.underscore.dasherize if self.class.module_parent != ::Object
 
       ::GlobalID.app
     end
 
     def resolve_gid_model_name
       return self.class.class_variable_get(:@@gid_model_name) if self.class.class_variable_defined?(:@@gid_model_name)
-      return self.class.name.split('::').slice(1..-1).join('::') if self.class.parent != ::Object
+      return self.class.name.split('::').slice(1..-1).join('::') if self.class.module_parent != ::Object
 
       self.class.name
     end
