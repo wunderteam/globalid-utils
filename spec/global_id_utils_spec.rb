@@ -60,14 +60,17 @@ RSpec.describe 'GlobalID extensions' do
   end
 
   describe 'GlobalID.scoped_find' do
-    let(:model_class) do
+    let!(:model_class) do
       module Fish
         class NeonTetra < Base
         end
       end
 
-      Fish::NeonTetra
+      ::Fish::NeonTetra
     end
+
+    before { GlobalID.app = 'testapp' }
+    after { Fish.send(:remove_const, 'NeonTetra') if Fish.const_defined?('NeonTetra') }
 
     context 'when called with scope objects' do
       it 'evaluates multiple scopes' do

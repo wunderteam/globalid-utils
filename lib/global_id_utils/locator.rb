@@ -1,6 +1,6 @@
 module GlobalIdUtils
   module Locator
-    def self.locate(gid, scopes)
+    def self.locate(gid, scopes = [])
       gid = ::GlobalID.parse(gid)
       model_class = model_class_for(gid)
       unscoped(model_class) do
