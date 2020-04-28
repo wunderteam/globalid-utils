@@ -5,7 +5,7 @@ RSpec.describe 'GlobalID extensions' do
     it 'invokes GlobalIdUtils::Locator.locate' do
       str = 'gid://fish/NeonTetra/1'
 
-      expect(GlobalIdUtils::Locator).to receive(:locate).with(str)
+      expect(GlobalIdUtils::Locator).to receive(:locate).with(str, [])
       GlobalID::Locator.locate(str)
     end
   end
@@ -56,6 +56,65 @@ RSpec.describe 'GlobalID extensions' do
 
       expect(GlobalID).to receive(:find_many).with(gids, ignore_missing: true)
       GlobalID.find_many!(strs, ignore_missing: true)
+    end
+  end
+
+  describe 'GlobalID.scoped_find' do
+    let(:model_class) do
+      module Fish
+        class NeonTetra < Base
+        end
+      end
+
+      Fish::NeonTetra
+    end
+
+    context 'when called with scope objects' do
+      it 'evaluates multiple scopes' do
+        with_name_scope = ::GlobalIdUtils::Scope.new(:with_name, 'Nemo')
+        with_fins_scope = ::GlobalIdUtils::Scope.new(:with_fins)
+
+        expect(model_class).to receive(:with_name).with('Nemo').and_return(model_class)
+        expect(model_class).to receive(:with_fins).and_return(model_class)
+        expect(model_class).to receive(:find_by!).with(id: '1').and_return(double)
+
+        GlobalID.scoped_find('gid://fish/NeonTetra/1', [with_name_scope, with_fins_scope])
+      end
+
+      it 'evaluates a single scope' do
+        with_name_scope = ::GlobalIdUtils::Scope.new(:with_name, 'Nemo')
+
+        expect(model_class).to receive(:with_name).with('Nemo').and_return(model_class)
+        expect(model_class).to receive(:find_by!).with(id: '1').and_return(double)
+
+        GlobalID.scoped_find('gid://fish/NeonTetra/1', with_name_scope)
+      end
+    end
+
+    context 'when called with scope name symbols' do
+      it 'evaluates multiple scopes' do
+        expect(model_class).to receive(:with_name).and_return(model_class)
+        expect(model_class).to receive(:with_fins).and_return(model_class)
+        expect(model_class).to receive(:find_by!).with(id: '1').and_return(double)
+
+        GlobalID.scoped_find('gid://fish/NeonTetra/1', [:with_name, :with_fins])
+      end
+
+      it 'evaluates a single scope' do
+        expect(model_class).to receive(:with_fins).and_return(model_class)
+        expect(model_class).to receive(:find_by!).with(id: '1').and_return(double)
+
+        GlobalID.scoped_find('gid://fish/NeonTetra/1', :with_fins)
+      end
+    end
+
+    context 'when called with scope name strings' do
+      it 'evaluates the scope' do
+        expect(model_class).to receive(:with_fins).and_return(model_class)
+        expect(model_class).to receive(:find_by!).with(id: '1').and_return(double)
+
+        GlobalID.scoped_find('gid://fish/NeonTetra/1', 'with_fins')
+      end
     end
   end
 end

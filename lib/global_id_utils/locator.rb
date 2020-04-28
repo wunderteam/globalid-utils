@@ -1,9 +1,13 @@
 module GlobalIdUtils
   module Locator
-    def self.locate(gid)
+    def self.locate(gid, scopes)
       gid = ::GlobalID.parse(gid)
       model_class = model_class_for(gid)
-      unscoped(model_class) { model_class.find_by!(model_class.gid_model_id_attribute => gid.model_id) }
+      unscoped(model_class) do
+        relation = model_class
+        scopes.each { |scope| relation.send(scope.name, *scope.args) }
+        relation.find_by!(model_class.gid_model_id_attribute => gid.model_id)
+      end
     end
 
     def self.locate_many(gids, options = {})
