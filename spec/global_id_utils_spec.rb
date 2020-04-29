@@ -96,11 +96,11 @@ RSpec.describe 'GlobalID extensions' do
 
     context 'when called with scope name symbols' do
       it 'evaluates multiple scopes' do
-        expect(model_class).to receive(:with_name).and_return(model_class)
+        expect(model_class).to receive(:with_eyes).and_return(model_class)
         expect(model_class).to receive(:with_fins).and_return(model_class)
         expect(model_class).to receive(:find_by!).with(id: '1').and_return(double)
 
-        GlobalID.scoped_find('gid://fish/NeonTetra/1', [:with_name, :with_fins])
+        GlobalID.scoped_find('gid://fish/NeonTetra/1', [:with_eyes, :with_fins])
       end
 
       it 'evaluates a single scope' do
