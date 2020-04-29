@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'globalid',       '~> 0.4.0'
   s.add_dependency 'railties',       '~> 5.2.4'
 
-  s.add_development_dependency 'rake',  '12.3.0'
+  s.add_development_dependency 'rake',  '12.3.3'
   s.add_development_dependency 'rspec', '3.6.0'
   s.add_development_dependency 'pry',   '~> 0.12'
   s.add_development_dependency 'rspec_junit_formatter',    '~> 0.3.0'
