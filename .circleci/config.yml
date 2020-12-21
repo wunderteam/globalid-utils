@@ -12,7 +12,7 @@ workflows:
 
 # test docker config
 docker: &TEST_DOCKER
-  - image: circleci/ruby:2.7.2-browsers
+  - image: cimg/ruby:2.7.2
     environment:
       TZ: "America/Denver"
 
