@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activemodel',    '~> 6.0.4'
   s.add_dependency 'activesupport',  '~> 6.0.4'
-  s.add_dependency 'globalid',       '~> 0.4.2'
+  s.add_dependency 'globalid',       '~> 1.0', '>= 1.0.1'
   s.add_dependency 'railties',       '~> 6.0.4'
 
   s.add_development_dependency 'rake',  '12.3.3'
