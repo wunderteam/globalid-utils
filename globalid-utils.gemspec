@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= #{IO.read(File.expand_path('.ruby-version', __dir__)).chomp}"
 
-  s.add_dependency 'activemodel',    '~> 6.1'
-  s.add_dependency 'activesupport',  '~> 6.1'
+  s.add_dependency 'activemodel',    '>= 6', '< 7'
+  s.add_dependency 'activesupport',  '>= 6', '< 7'
   s.add_dependency 'globalid',       '~> 1.0', '>= 1.0.1'
-  s.add_dependency 'railties',       '~> 6.1'
+  s.add_dependency 'railties',       '>= 6', '< 7'
 
   s.add_development_dependency 'pry',   '~> 0.12'
   s.add_development_dependency 'rake',  '12.3.3'

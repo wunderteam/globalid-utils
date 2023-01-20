@@ -2,10 +2,10 @@ PATH
   remote: .
   specs:
     globalid-utils (0.4.0)
-      activemodel (~> 6.1)
-      activesupport (~> 6.1)
+      activemodel (>= 6, < 7)
+      activesupport (>= 6, < 7)
       globalid (~> 1.0, >= 1.0.1)
-      railties (~> 6.1)
+      railties (>= 6, < 7)
 
 GEM
   remote: https://rubygems.org/
