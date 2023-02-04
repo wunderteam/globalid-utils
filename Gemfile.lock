@@ -4,7 +4,7 @@ PATH
     globalid-utils (0.4.0)
       activemodel (>= 6, < 8)
       activesupport (>= 6, < 8)
-      globalid (~> 1.0, < 1.1.0)
+      globalid (>= 1.0.1, < 1.1.0)
       railties (>= 6, < 8)
 
 GEM
