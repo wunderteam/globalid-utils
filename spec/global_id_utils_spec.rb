@@ -38,7 +38,7 @@ RSpec.describe 'GlobalID extensions' do
       strs = ['gid://fish/NeonTetra/1', 'gid://fish/SiameseFighting/1']
       gids = strs.map { |str| GlobalID.parse(str) }
 
-      expect(GlobalID::Locator).to receive(:locate_many).with(gids, ignore_missing: true)
+      expect(GlobalID::Locator).to receive(:locate_many).with(gids, {ignore_missing: true})
       GlobalID.find_many(strs, ignore_missing: true)
     end
   end
@@ -54,7 +54,7 @@ RSpec.describe 'GlobalID extensions' do
       strs = ['gid://fish/NeonTetra/1', 'gid://fish/SiameseFighting/1']
       gids = strs.map { |str| GlobalID.new(str) }
 
-      expect(GlobalID).to receive(:find_many).with(gids, ignore_missing: true)
+      expect(GlobalID).to receive(:find_many).with(gids, {ignore_missing: true})
       GlobalID.find_many!(strs, ignore_missing: true)
     end
   end
