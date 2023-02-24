@@ -12,12 +12,12 @@ workflows:
 
 # test docker config
 docker: &TEST_DOCKER
-  - image: cimg/ruby:2.7.5
+  - image: cimg/ruby:3.2.1
     environment:
       TZ: "America/Denver"
 
 rspec_steps: &RSPEC_STEPS
-  - run: gem install bundler:2.2.31
+  - run: gem install bundler:2.4.6
   - checkout
 
   # Restore cache
