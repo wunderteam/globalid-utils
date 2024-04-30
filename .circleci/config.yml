@@ -12,7 +12,7 @@ workflows:
 
 # test docker config
 docker: &TEST_DOCKER
-  - image: cimg/ruby:3.2.1
+  - image: cimg/ruby:3.3.1
     environment:
       TZ: "America/Denver"
 
