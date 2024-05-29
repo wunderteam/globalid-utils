@@ -1,0 +1,16 @@
+name: 'Dependabot Vulnerabilities to Slack'
+
+# Every Weekday at 9AM
+# https://crontab.guru/#0_9_*_*_1-5
+on:
+  schedule:
+    - cron: "0 9 * * 1-5"
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: kunalnagarco/action-cve@v1.7.15
+        with:
+          token: ${{ secrets.SLACK_GITHUB_ACCESS_TOKEN }}
+          slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
