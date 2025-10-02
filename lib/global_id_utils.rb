@@ -39,4 +39,8 @@ class GlobalID
     gids = gids.map { |gid| new(gid) }
     find_many(gids, options)
   end
+
+  def model_class
+    ::GlobalIdUtils::Locator.model_class_for(self)
+  end
 end

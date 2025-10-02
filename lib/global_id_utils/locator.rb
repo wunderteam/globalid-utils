@@ -22,7 +22,6 @@ module GlobalIdUtils
         "#{gid.app.underscore.camelize}::#{gid::model_name}".constantize
       end
     end
-    private_class_method :model_class_for
 
     def self.find_records(model_class, ids, options)
       ids = ids.compact.uniq

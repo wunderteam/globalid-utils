@@ -149,4 +149,12 @@ RSpec.describe GlobalIdUtils::Locator do
       end.to raise_error('boom!')
     end
   end
+
+  describe '::model_class_for' do
+    it 'returns the model class for the given GID' do
+      model_class
+      gid = GlobalID.parse('gid://aquatic-lifeforms/NeonTetra/1')
+      expect(described_class.send(:model_class_for, gid)).to eq(AquaticLifeforms::NeonTetra)
+    end
+  end
 end
