@@ -120,4 +120,23 @@ RSpec.describe 'GlobalID extensions' do
       end
     end
   end
+
+  describe 'GlobalID#model_class' do
+    let!(:model_class) do
+      module Fish
+        class NeonTetra < Base
+        end
+      end
+
+      ::Fish::NeonTetra
+    end
+
+    before { GlobalID.app = 'testapp' }
+    after { Fish.send(:remove_const, 'NeonTetra') if Fish.const_defined?('NeonTetra') }
+
+    it 'returns the model class for the gid' do
+      gid = GlobalID.new('gid://fish/NeonTetra/1')
+      expect(gid.model_class).to eq(::Fish::NeonTetra)
+    end
+  end
 end

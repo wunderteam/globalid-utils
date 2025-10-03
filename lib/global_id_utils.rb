@@ -39,4 +39,12 @@ class GlobalID
     gids = gids.map { |gid| new(gid) }
     find_many(gids, options)
   end
+
+  def model_class
+    if self.app.to_s == ::GlobalID.app.to_s
+      self.model_name.classify.constantize
+    else
+      "#{self.app.underscore.camelize}::#{self.model_name}".constantize
+    end
+  end
 end

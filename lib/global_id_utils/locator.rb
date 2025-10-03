@@ -2,7 +2,7 @@ module GlobalIdUtils
   module Locator
     def self.locate(gid, scopes = [])
       gid = ::GlobalID.parse(gid)
-      model_class = model_class_for(gid)
+      model_class = gid.model_class
       unscoped(model_class) do
         relation = model_class
         scopes.each { |scope| relation.send(scope.name, *scope.args) }
@@ -11,18 +11,9 @@ module GlobalIdUtils
     end
 
     def self.locate_many(gids, options = {})
-      models_and_ids = gids.each_with_object({}) { |gid, hsh| (hsh[model_class_for(gid)] ||= []) << gid.model_id }
+      models_and_ids = gids.each_with_object({}) { |gid, hsh| (hsh[gid.model_class] ||= []) << gid.model_id }
       models_and_ids.map { |model_class, ids| find_records(model_class, ids, options) }.flatten
     end
-
-    def self.model_class_for(gid)
-      if gid.app.to_s == ::GlobalID.app.to_s
-        gid.model_name.classify.constantize
-      else
-        "#{gid.app.underscore.camelize}::#{gid::model_name}".constantize
-      end
-    end
-    private_class_method :model_class_for
 
     def self.find_records(model_class, ids, options)
       ids = ids.compact.uniq
