@@ -46,5 +46,7 @@ class GlobalID
     else
       "#{self.app.underscore.camelize}::#{self.model_name}".constantize
     end
+  rescue NameError
+    nil
   end
 end

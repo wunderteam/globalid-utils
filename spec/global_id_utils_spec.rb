@@ -138,5 +138,10 @@ RSpec.describe 'GlobalID extensions' do
       gid = GlobalID.new('gid://fish/NeonTetra/1')
       expect(gid.model_class).to eq(::Fish::NeonTetra)
     end
+
+    it 'returns nil when the model class cannot be constantized' do
+      gid = GlobalID.new('gid://fish/NonExistentModel/1')
+      expect(gid.model_class).to be_nil
+    end
   end
 end
